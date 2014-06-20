@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Media Upload</title>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript">
+function _(el){
+	return document.getElementById(el);
+	
+}
+
+function showProgressBar(){
+	var file = _("uploadimage").files[0];
+	//alert(file.type);
+	if(file.type=="image/jpeg" || file.type=="image/png"|| file.type=="image/jpg")
+	{
+	document.getElementById("progressDiv").style.display = 'block';
+	uploadFile();
+	}
+	else
+	{
+		_("status").innerHTML = "Not an Image!";
+		}
+}
+
+function uploadFile(){
+	var file = _("uploadimage").files[0];
+	//alert(file.name+" | "+file.size+" | "+file.type);
+	var formdata = new FormData();
+	formdata.append("uploadimage", file);
+	var ajax = new XMLHttpRequest();
+	ajax.upload.addEventListener("progress", progressHandler, false);
+	ajax.addEventListener("load", completeHandler, false);
+	ajax.addEventListener("error", errorHandler, false);
+	ajax.addEventListener("abort", abortHandler, false);
+	ajax.open("POST", "image_upload.php");
+	ajax.send(formdata);
+	
+}
+function progressHandler(event){
+	_("loaded_n_total").innerHTML = "Uploaded "+event.loaded+" bytes of "+event.total;
+	var percent = (event.loaded / event.total) * 100;
+	_("progressBar").value = Math.round(percent);
+	_("status").innerHTML = Math.round(percent)+"% uploaded... please wait";
+	//alert(percent);
+}
+function completeHandler(event){
+	_("status").innerHTML = event.target.responseText;
+	showProgressBar2();
+	//_("progressBar").value = 0;
+	//document.getElementById("progressDiv").style.display = 'none';
+	
+}
+function errorHandler(event){
+	_("status").innerHTML = "Upload Failed";
+}
+function abortHandler(event){
+	_("status").innerHTML = "Upload Aborted";
+}
+function showProgressBar2(){
+	var file = _("uploadvideo").files[0];
+	//alert(file.type);
+	if(file.type=="video/x-ms-wmv"|| file.type=="audio/mp3"||file.type=="video/wmv")
+	{
+	document.getElementById("progressDiv2").style.display = 'block';
+	uploadFile2();
+	}
+	else
+	{
+		_("status2").innerHTML = "Not an Image!";
+		}
+}
+
+function uploadFile2(){
+	var file2 = _("uploadvideo").files[0];
+	//alert(file2.name+" | "+file2.size+" | "+file2.type);
+	var formdata2 = new FormData();
+	formdata2.append("uploadvideo", file2);
+	var ajax = new XMLHttpRequest();
+	ajax.upload.addEventListener(document.getElementById("progressBar2"), progressHandler2, false);
+	ajax.addEventListener("load", completeHandler2, false);
+	ajax.addEventListener("error", errorHandler2, false);
+	ajax.addEventListener("abort", abortHandler2, false);
+	ajax.open("POST", "video_upload.php");
+	ajax.send(formdata2);
+	
+}
+function progressHandler2(event){
+	_("loaded_n_total2").innerHTML = "Uploaded "+event.loaded+" bytes of "+event.total;
+	var percent2 = (event.loaded / event.total) * 100;
+	_("progressBar2").value = Math.round(percent2);
+	_("status2").innerHTML = Math.round(percent2)+"% uploaded... please wait";
+	//alert(percent);
+}
+function completeHandler2(event){
+	_("status2").innerHTML = event.target.responseText;
+	//_("progressBar").value = 0;
+	//document.getElementById("progressDiv").style.display = 'none';
+	
+}
+function errorHandler2(event){
+	_("status2").innerHTML = "Upload Failed";
+}
+function abortHandler2(event){
+	_("status2").innerHTML = "Upload Aborted";
+}
+</script>
+
+</head>
+
+<body>
+<h1>Media Upload</h1>
+<form name="upload_form" id="upload_form" method="POST" enctype="multipart/form-data">
+
+Upload Image: <input type="file" id="uploadimage" name="uploadimage" /><br />
+ <div id="progressDiv" style="display:none">
+  <progress id="progressBar"  value="0" max="100" style="width:300px;"></progress>
+  </div>
+  <h3 id="status"></h3>
+  <p id="loaded_n_total"></p>
+  
+Upload Video: <input type="file" id="uploadvideo" name="upload_video" /><br />
+<input type="button" value="Upload" name="uploadButton" onclick="showProgressBar();"/><br />
+ <div id="progressDiv2" style="display:none">
+  <progress id="progressBar2"  value="0" max="100" style="width:300px;"></progress>
+  </div>
+  <h3 id="status2"></h3>
+  <p id="loaded_n_total2"></p>
+  
+</form>
+</body>
+</html>
