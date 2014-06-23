@@ -3,6 +3,7 @@
 <head>
 <title>Media Upload</title>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
 <script type="text/javascript">
 function _(el){
 	return document.getElementById(el);
@@ -12,7 +13,7 @@ function _(el){
 function showProgressBar(){
 	var file = _("uploadimage").files[0];
 	//alert(file.type);
-	if(file.type=="image/jpeg" || file.type=="image/png"|| file.type=="image/jpg")
+	if(file.type=="image/jpeg" || file.type=="image/png"|| file.type=="image/jpg" || file.type=="video/x-ms-wmv")
 	{
 	document.getElementById("progressDiv").style.display = 'block';
 	uploadFile();
@@ -46,10 +47,10 @@ function progressHandler(event){
 }
 function completeHandler(event){
 	_("status").innerHTML = event.target.responseText;
-	showProgressBar2();
 	//_("progressBar").value = 0;
 	//document.getElementById("progressDiv").style.display = 'none';
-	
+	var elem = document.getElementById('progressDiv');
+    elem.parentNode.removeChild(elem);
 }
 function errorHandler(event){
 	_("status").innerHTML = "Upload Failed";
@@ -57,6 +58,10 @@ function errorHandler(event){
 function abortHandler(event){
 	_("status").innerHTML = "Upload Aborted";
 }
+
+
+
+
 function showProgressBar2(){
 	var file = _("uploadvideo").files[0];
 	//alert(file.type);
@@ -77,7 +82,7 @@ function uploadFile2(){
 	var formdata2 = new FormData();
 	formdata2.append("uploadvideo", file2);
 	var ajax = new XMLHttpRequest();
-	ajax.upload.addEventListener(document.getElementById("progressBar2"), progressHandler2, false);
+	ajax.upload.addEventListener("progress", progressHandler2, false);
 	ajax.addEventListener("load", completeHandler2, false);
 	ajax.addEventListener("error", errorHandler2, false);
 	ajax.addEventListener("abort", abortHandler2, false);
@@ -96,7 +101,8 @@ function completeHandler2(event){
 	_("status2").innerHTML = event.target.responseText;
 	//_("progressBar").value = 0;
 	//document.getElementById("progressDiv").style.display = 'none';
-	
+	var elem2 = document.getElementById('progressDiv2');
+    elem2.parentNode.removeChild(elem2);
 }
 function errorHandler2(event){
 	_("status2").innerHTML = "Upload Failed";
@@ -112,17 +118,18 @@ function abortHandler2(event){
 <h1>Media Upload</h1>
 <form name="upload_form" id="upload_form" method="POST" enctype="multipart/form-data">
 
-Upload Image: <input type="file" id="uploadimage" name="uploadimage" /><br />
+Select Image: <input type="file" id="uploadimage" name="uploadimage" /><br />
+<input type="button" value="Upload" name="uploadButton" onclick="showProgressBar();"/><br />
  <div id="progressDiv" style="display:none">
   <progress id="progressBar"  value="0" max="100" style="width:300px;"></progress>
   </div>
   <h3 id="status"></h3>
   <p id="loaded_n_total"></p>
   
-Upload Video: <input type="file" id="uploadvideo" name="upload_video" /><br />
-<input type="button" value="Upload" name="uploadButton" onclick="showProgressBar();"/><br />
+Select Video: <input type="file" id="uploadvideo" name="upload_video" /><br />
+<input type="button" value="Upload" name="uploadButton" onclick="showProgressBar2();"/><br />
  <div id="progressDiv2" style="display:none">
-  <progress id="progressBar2"  value="0" max="100" style="width:300px;"></progress>
+  <progress id="progressBar2"  name="progressbar2" value="0" max="100" style="width:300px;"></progress>
   </div>
   <h3 id="status2"></h3>
   <p id="loaded_n_total2"></p>
