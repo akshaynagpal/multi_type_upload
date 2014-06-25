@@ -29,7 +29,7 @@ SOFTWARE.
 MULTIPLE TYPE FILE UPLOAD
 =================
 
-Upload image and videos and audio together using PHP,Ajax &amp; Javascript
+Upload image and videos and audio together and create thumbnails too using PHP, Ajax, Javascript &amp; FFMPEG extension.
 
 
 ***********Instructions**********************
