@@ -13,10 +13,17 @@ function _(el){
 function showProgressBar(){
 	var file = _("uploadimage").files[0];
 	//alert(file.type);
-	if(file.type=="image/jpeg" || file.type=="image/png"|| file.type=="image/jpg" || file.type=="video/x-ms-wmv")
+	if(file.type=="image/jpeg" || file.type=="image/png"|| file.type=="image/jpg")
 	{
+		if(file.size<=1048576)
+		{
 	document.getElementById("progressDiv").style.display = 'block';
 	uploadFile();
+		}
+		else
+		{
+			_("status").innerHTML = "Image size exceeds 1 MB! Please try again!";
+			}
 	}
 	else
 	{
@@ -64,15 +71,23 @@ function abortHandler(event){
 
 function showProgressBar2(){
 	var file = _("uploadvideo").files[0];
-	//alert(file.type);
-	if(file.type=="video/x-ms-wmv"|| file.type=="audio/mp3"||file.type=="video/wmv")
-	{
+	alert(file.type);
+	if(file.type=="video/x-ms-wmv"||file.type=="video/x-ms-mp4"||file.type=="video/wmv"||file.type=="video/mp4")
+	{	
+		if(file.size<=51242880)
+		{
 	document.getElementById("progressDiv2").style.display = 'block';
 	uploadFile2();
+		}
+		else
+		{
+			_("status2").innerHTML = "Video size exceeds 5 MB! Please try again!";
+			}
 	}
+	
 	else
 	{
-		_("status2").innerHTML = "Not an Image!";
+		_("status2").innerHTML = "Not a video!";
 		}
 }
 
@@ -119,7 +134,7 @@ function abortHandler2(event){
 <form name="upload_form" id="upload_form" method="POST" enctype="multipart/form-data">
 
 Select Image: <input type="file" id="uploadimage" name="uploadimage" /><br />
-<input type="button" value="Upload" name="uploadButton" onclick="showProgressBar();"/><br />
+<input type="button" value="Upload Image" name="uploadButton" onclick="showProgressBar();"/>Format allowed:"jpg" "gif", "png" only.<br />
  <div id="progressDiv" style="display:none">
   <progress id="progressBar"  value="0" max="100" style="width:300px;"></progress>
   </div>
@@ -127,7 +142,7 @@ Select Image: <input type="file" id="uploadimage" name="uploadimage" /><br />
   <p id="loaded_n_total"></p>
   
 Select Video: <input type="file" id="uploadvideo" name="upload_video" /><br />
-<input type="button" value="Upload" name="uploadButton" onclick="showProgressBar2();"/><br />
+<input type="button" value="Upload Video" name="uploadButton" onclick="showProgressBar2();"/>Format allowed:"mp4" only.<br />
  <div id="progressDiv2" style="display:none">
   <progress id="progressBar2"  name="progressbar2" value="0" max="100" style="width:300px;"></progress>
   </div>

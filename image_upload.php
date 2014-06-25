@@ -1,5 +1,6 @@
 <?php
-$allowedExts = array("jpg", "jpeg", "gif", "png","wmv");
+
+$allowedExts = array("jpg", "jpeg", "gif", "png");
 //$extension = pathinfo($_FILES['uploadimage']['name'], PATHINFO_EXTENSION);
 $temp = explode(".", $_FILES["uploadimage"]["name"]);
 $extension = end($temp);
@@ -19,6 +20,17 @@ if (
 			$fileSize = $_FILES["uploadimage"]["size"]; // File size in bytes
 			$fileErrorMsg = $_FILES["uploadimage"]["error"]; // 0 for false... and 1 for true
 			
+			$src = imagecreatefromjpeg($fileTmpLoc);
+			list($width,$height)=getimagesize($fileTmpLoc);
+			$newwidth=150;
+			$newheight=150;
+			$thumbname="test_uploads/small/".$fileName;
+			$tmp=imagecreatetruecolor($newwidth,$newheight);
+			imagecopyresampled($tmp,$src,0,0,0,0,$newwidth,$newheight,
+ $width,$height);
+ 			imagejpeg($tmp,$thumbname,100);
+			
+			
 			/*
 			if (!$fileTmpLoc) { // if file not chosen
 				echo "ERROR: Please browse for a file before clicking the upload button.";
@@ -28,6 +40,7 @@ if (
 			
 			if(move_uploaded_file($fileTmpLoc, "test_uploads/".$fileName)){
 				echo "$fileName upload is complete";
+				
 			} 
 			else {
 				echo "move_uploaded_file function failed";
